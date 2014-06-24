@@ -1,0 +1,29 @@
+<table class="table table-striped table-hover">
+	<thead>
+		<tr>
+			<th>Number</th>
+			<th>Stage</th>
+			<th>Loc team</th>
+			<th>Vis team</th>
+			<th>Loc goals</th>
+			<th>Vis goals</th>
+			<th>Loc pen</th>
+			<th>Vis pen</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% snap.forEach(function(matchSnap){ %>
+		<tr>
+			<td><a href="#matches/<%= matchSnap.name() %>"><%= matchSnap.name() %></a></td>
+			<td><%= matchSnap.val().stage %></td>
+			<td><%= matchSnap.val().loc_team %></td>
+			<td><%= matchSnap.val().vis_team %></td>
+			<td><%= matchSnap.val().loc_goals %></td>
+			<td><%= matchSnap.val().vis_goals %></td>
+			<td><%= matchSnap.val().loc_pen %></td>
+			<td><%= matchSnap.val().vis_pen %></td>
+		</tr>
+		<%}) %>
+	</tbody>
+</table>
+

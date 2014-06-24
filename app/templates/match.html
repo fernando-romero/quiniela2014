@@ -1,0 +1,34 @@
+<h2><%= snap.val().stage %> - <%= snap.val().loc_team + ' vs ' + snap.val().vis_team %></h2>
+<h2>Score: <%= snap.val().loc_goals + ' - ' + snap.val().vis_goals %></h2>
+<% if (snap.val().loc_pen & snap.val().vis_pen) { %>
+<h2>Penalties: <%= snap.val().loc_pen + ' - ' + snap.val().vis_pen %></h2>
+<% }%>
+<table class="table table-striped table-hover">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Loc team</th>
+			<th>Vis team</th>
+			<th>Loc goals</th>
+			<th>Vis goals</th>
+			<th>Loc pen</th>
+			<th>Vis pen</th>
+			<th>Points</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% snap.child('forecasts').forEach(function(forecastSnap){ %>
+		<tr>
+			<td><a href="#players/<%= forecastSnap.name() %>"><%= forecastSnap.name() %></a></td>
+			<td><%= forecastSnap.val().loc_team %></td>
+			<td><%= forecastSnap.val().vis_team %></td>
+			<td><%= forecastSnap.val().loc_goals %></td>
+			<td><%= forecastSnap.val().vis_goals %></td>
+			<td><%= forecastSnap.val().loc_pen %></td>
+			<td><%= forecastSnap.val().vis_pen %></td>
+			<td><%= forecastSnap.val().points %></td>
+		</tr>
+		<%}) %>
+	</tbody>
+</table>
+
