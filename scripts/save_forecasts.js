@@ -26,14 +26,14 @@ proccessFile = function(file) {
 	console.log('===' + file + ' ===');
 	var sheet = XLSX.readFile('../submissions/' + file).Sheets['Mundial 2014'];
 	var name = file.split('.xlsx')[0];
-	saveGroupForecasts(sheet, name, 1, 4, 'D', 'F');
-	saveGroupForecasts(sheet, name, 7, 11, 'D', 'F');
-	saveGroupForecasts(sheet, name, 13, 18, 'D', 'F');
-	saveGroupForecasts(sheet, name, 19, 25, 'D', 'F');
-	saveGroupForecasts(sheet, name, 25, 4, 'U', 'W');
-	saveGroupForecasts(sheet, name, 31, 11, 'U', 'W');
-	saveGroupForecasts(sheet, name, 37, 18, 'U', 'W');
-	saveGroupForecasts(sheet, name, 43, 25, 'U', 'W');
+	saveGroupForecasts(sheet, name, 1, 4, 'D', 'F', 'C', 'G');
+	saveGroupForecasts(sheet, name, 7, 11, 'D', 'F', 'C', 'G');
+	saveGroupForecasts(sheet, name, 13, 18, 'D', 'F', 'C', 'G');
+	saveGroupForecasts(sheet, name, 19, 25, 'D', 'F', 'C', 'G');
+	saveGroupForecasts(sheet, name, 25, 4, 'U', 'W', 'T', 'X');
+	saveGroupForecasts(sheet, name, 31, 11, 'U', 'W', 'T', 'X');
+	saveGroupForecasts(sheet, name, 37, 18, 'U', 'W', 'T', 'X');
+	saveGroupForecasts(sheet, name, 43, 25, 'U', 'W', 'T', 'X');
 	savePlayoffForecasts(sheet, name, 49, 56, 34, 'O', 'Q', 'J', 'R', 'U', 'W');
 	savePlayoffForecasts(sheet, name, 57, 60, 44, 'O', 'Q', 'J', 'R', 'U', 'W');
 	savePlayoffForecasts(sheet, name, 61, 62, 50, 'O', 'Q', 'J', 'R', 'U', 'W');
@@ -41,13 +41,16 @@ proccessFile = function(file) {
 	savePlayoffForecasts(sheet, name, 64, 64, 57, 'O', 'Q', 'J', 'R', 'U', 'W');
 }
 
-saveGroupForecasts = function(sheet, name, numStart, rowStart, locGoalsCol, visGoalsCol) {
+saveGroupForecasts = function(sheet, name, numStart, rowStart, locGoalsCol, visGoalsCol,
+	locTeamCol, visTeamCol) {
 	var row = rowStart;
 	for (var i = numStart; i <= numStart + 5; i++) {
-		ref.child('matches/' + i + '/forecasts/' + name + '/loc_goals').set(sheet[locGoalsCol + row].v);
-		ref.child('players/' + name + '/forecasts/' + i + '/loc_goals').set(sheet[locGoalsCol + row].v);
-		ref.child('matches/' + i + '/forecasts/' + name + '/vis_goals').set(sheet[visGoalsCol + row].v);
-		ref.child('players/' + name + '/forecasts/' + i + '/vis_goals').set(sheet[visGoalsCol + row].v);
+		set('matches/' + i + '/forecasts/' + name + '/loc_goals', sheet[locGoalsCol + row].v);
+		set('players/' + name + '/forecasts/' + i + '/loc_goals', sheet[locGoalsCol + row].v);
+		set('matches/' + i + '/forecasts/' + name + '/vis_goals', sheet[visGoalsCol + row].v);
+		set('players/' + name + '/forecasts/' + i + '/vis_goals', sheet[visGoalsCol + row].v);
+		set('players/' + name + '/forecasts/' + i + '/loc_team', sheet[locTeamCol + row].v);
+		set('players/' + name + '/forecasts/' + i + '/vis_team', sheet[visTeamCol + row].v);
 		row++;
 	};
 };
@@ -56,22 +59,29 @@ savePlayoffForecasts = function(sheet, name, numStart, numEnd, rowStart, locGoal
 	locTeamCol, visTeamCol, locPenCol, visPenCol) {
 	var row = rowStart;
 	for (var i = numStart; i <= numEnd; i++) {
-		ref.child('matches/' + i + '/forecasts/' + name + '/loc_goals').set(sheet[locGoalsCol + row].v);
-		ref.child('players/' + name + '/forecasts/' + i + '/loc_goals').set(sheet[locGoalsCol + row].v);
-		ref.child('matches/' + i + '/forecasts/' + name + '/vis_goals').set(sheet[visGoalsCol + row].v);
-		ref.child('players/' + name + '/forecasts/' + i + '/vis_goals').set(sheet[visGoalsCol + row].v);
-		ref.child('matches/' + i + '/forecasts/' + name + '/loc_team').set(sheet[locTeamCol + row].v);
-		ref.child('players/' + name + '/forecasts/' + i + '/loc_team').set(sheet[locTeamCol + row].v);
-		ref.child('matches/' + i + '/forecasts/' + name + '/vis_team').set(sheet[visTeamCol + row].v);
-		ref.child('players/' + name + '/forecasts/' + i + '/vis_team').set(sheet[visTeamCol + row].v);
+		set('matches/' + i + '/forecasts/' + name + '/loc_goals', sheet[locGoalsCol + row].v);
+		set('players/' + name + '/forecasts/' + i + '/loc_goals', sheet[locGoalsCol + row].v);
+		set('matches/' + i + '/forecasts/' + name + '/vis_goals', sheet[visGoalsCol + row].v);
+		set('players/' + name + '/forecasts/' + i + '/vis_goals', sheet[visGoalsCol + row].v);
+		set('matches/' + i + '/forecasts/' + name + '/loc_team', sheet[locTeamCol + row].v);
+		set('players/' + name + '/forecasts/' + i + '/loc_team', sheet[locTeamCol + row].v);
+		set('matches/' + i + '/forecasts/' + name + '/vis_team', sheet[visTeamCol + row].v);
+		set('players/' + name + '/forecasts/' + i + '/vis_team', sheet[visTeamCol + row].v);
 		if (sheet[locPenCol + row]) {
-			ref.child('matches/' + i + '/forecasts/' + name + '/loc_pen').set(sheet[locPenCol + row].v);
-			ref.child('players/' + name + '/forecasts/' + i + '/loc_pen').set(sheet[locPenCol + row].v);
+			set('matches/' + i + '/forecasts/' + name + '/loc_pen', sheet[locPenCol + row].v);
+			set('players/' + name + '/forecasts/' + i + '/loc_pen', sheet[locPenCol + row].v);
 		}
 		if (sheet[visPenCol + row]) {
-			ref.child('matches/' + i + '/forecasts/' + name + '/vis_pen').set(sheet[visPenCol + row].v);
-			ref.child('players/' + name + '/forecasts/' + i + '/vis_pen').set(sheet[visPenCol + row].v);
+			set('matches/' + i + '/forecasts/' + name + '/vis_pen', sheet[visPenCol + row].v);
+			set('players/' + name + '/forecasts/' + i + '/vis_pen', sheet[visPenCol + row].v);
 		}
 		row++;
 	};
 };
+
+set = function(path, value) {
+	ref.child(path).set(value, function(err) {
+		if (err) console.log(err);
+		console.log(path + ' <- ' + value);
+	});
+}

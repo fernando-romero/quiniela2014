@@ -28,9 +28,9 @@ init = function() {
 saveGroup = function(stage, numStart, rowStart, locGoalsCol, visGoalsCol) {
 	var row = rowStart;
 	for (var i = numStart; i <= numStart + 5; i++) {
-		ref.child('matches/' + i + '/loc_team').set(sheet[locGoalsCol + row].v);
-		ref.child('matches/' + i + '/vis_team').set(sheet[visGoalsCol + row].v);
-		ref.child('matches/' + i + '/stage').set(stage);
+		set('matches/' + i + '/loc_team', sheet[locGoalsCol + row].v);
+		set('matches/' + i + '/vis_team', sheet[visGoalsCol + row].v);
+		set('matches/' + i + '/stage', stage);
 		row++;
 	};
 };
@@ -38,20 +38,27 @@ saveGroup = function(stage, numStart, rowStart, locGoalsCol, visGoalsCol) {
 saveOctavos = function() {
 	var numStart = 49;
 	for (var i = numStart; i <= numStart + 7; i++) {
-		ref.child('matches/' + i + '/stage').set('Octavos');
+		set('matches/' + i + '/stage', 'Octavos');
 	};
 }
 
 saveCuartos = function() {
 	var numStart = 57;
 	for (var i = numStart; i <= numStart + 3; i++) {
-		ref.child('matches/' + i + '/stage').set('Cuartos');
+		set('matches/' + i + '/stage', 'Cuartos');
 	};
 }
 
 saveSemisAndFinals = function() {
-	ref.child('matches/61/stage').set('Semis');
-	ref.child('matches/62/stage').set('Semis');
-	ref.child('matches/63/stage').set('Tercer lugar');
-	ref.child('matches/64/stage').set('Final');
+	set('matches/61/stage', 'Semis');
+	set('matches/62/stage', 'Semis');
+	set('matches/63/stage', 'Tercer lugar');
+	set('matches/64/stage', 'Final');
+}
+
+set = function(path, value) {
+	ref.child(path).set(value, function(err) {
+		if (err) console.log(err);
+		console.log(path + ' <- ' + value);
+	});
 }
