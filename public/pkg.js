@@ -1,5 +1,53 @@
 this["JST"] = this["JST"] || {};
 
+this["JST"]["app/templates/bonus.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<h2>Place #' +
+((__t = ( snap.name()  )) == null ? '' : __t) +
+': ' +
+((__t = ( snap.val().team )) == null ? '' : __t) +
+'</h2>\n<table class="table table-striped table-hover">\n\t<thead>\n\t\t<tr>\n\t\t\t<th>Name</th>\n\t\t\t<th>Team</th>\n\t\t\t<th>Points</th>\n\t\t</tr>\n\t</thead>\n\t<tbody>\n\t\t';
+ snap.child('forecasts').forEach(function(forecastSnap){ ;
+__p += '\n\t\t<tr>\n\t\t\t<td><a href="#players/' +
+((__t = ( forecastSnap.name() )) == null ? '' : __t) +
+'">' +
+((__t = ( forecastSnap.name() )) == null ? '' : __t) +
+'</a></td>\n\t\t\t<td>' +
+((__t = ( forecastSnap.val().team )) == null ? '' : __t) +
+'</td>\n\t\t\t<td>' +
+((__t = ( forecastSnap.val().points )) == null ? '' : __t) +
+'</td>\n\t\t</tr>\n\t\t';
+}) ;
+__p += '\n\t</tbody>\n</table>\n\n';
+
+}
+return __p
+};
+
+this["JST"]["app/templates/bonuses.html"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
+function print() { __p += __j.call(arguments, '') }
+with (obj) {
+__p += '<table class="table table-striped table-hover">\n\t<thead>\n\t\t<tr>\n\t\t\t<th>Place</th>\n\t\t\t<th>Team</th>\n\t\t</tr>\n\t</thead>\n\t<tbody>\n\t\t';
+ snap.forEach(function(bonusSnap){ ;
+__p += '\n\t\t<tr>\n\t\t\t<td><a href="#bonus/' +
+((__t = ( bonusSnap.name() )) == null ? '' : __t) +
+'">' +
+((__t = ( bonusSnap.name() )) == null ? '' : __t) +
+'</a></td>\n\t\t\t<td>' +
+((__t = ( bonusSnap.val().team )) == null ? '' : __t) +
+'</td>\n\t\t</tr>\n\t\t';
+}) ;
+__p += '\n\t</tbody>\n</table>\n\n';
+
+}
+return __p
+};
+
 this["JST"]["app/templates/match.html"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
@@ -144,6 +192,54 @@ return __p
     FirebaseRef: new Firebase('https://quiniela2014.firebaseio.com')
   };
 })();
+app.Views.Bonus = Backbone.View.extend({
+
+  template: JST['app/templates/bonus.html'],
+
+  initialize: function(options){
+    this.ref = app.FirebaseRef.child('bonus/' + options.num);
+    this.ref.on('value', this._onValue, this._onError, this);
+  },
+
+  _onError: function(err){
+    console.log(err);
+  },
+
+  _onValue: function(snap){
+    this.snap = snap;
+    this.render();
+  },
+
+  render: function(){
+    this.$el.html(this.template({ snap: this.snap }));
+    return this;
+  }
+
+});
+app.Views.Bonuses = Backbone.View.extend({
+
+  template: JST['app/templates/bonuses.html'],
+
+  initialize: function(){
+    this.ref = app.FirebaseRef.child('bonus');
+    this.ref.on('value', this._onValue, this._onError, this);
+  },
+
+  _onError: function(err){
+    console.log(err);
+  },
+
+  _onValue: function(snap){
+    this.snap = snap;
+    this.render();
+  },
+
+  render: function(){
+    this.$el.html(this.template({ snap: this.snap }));
+    return this;
+  }
+
+});
 app.Views.Match = Backbone.View.extend({
 
   template: JST['app/templates/match.html'],
@@ -249,7 +345,9 @@ app.Routers.Main = Backbone.Router.extend({
     'players': 'players',
     'players/:name': 'player',
     'matches': 'matches',
-    'matches/:num': 'match'
+    'matches/:num': 'match',
+    'bonus': 'bonuses',
+    'bonus/:num': 'bonus'
   },
 
   prepare: function() {
@@ -275,6 +373,16 @@ app.Routers.Main = Backbone.Router.extend({
   match: function(num) {
   	this.prepare();
   	this.view = new app.Views.Match({ el: 'div.app_content', num: num });
+  },
+
+  bonuses: function(){
+    this.prepare();
+    this.view = new app.Views.Bonuses({ el: 'div.app_content' });
+  },
+
+  bonus: function(num) {
+    this.prepare();
+    this.view = new app.Views.Bonus({ el: 'div.app_content', num: num });
   }
 
 });

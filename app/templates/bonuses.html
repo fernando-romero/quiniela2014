@@ -1,0 +1,17 @@
+<table class="table table-striped table-hover">
+	<thead>
+		<tr>
+			<th>Place</th>
+			<th>Team</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% snap.forEach(function(bonusSnap){ %>
+		<tr>
+			<td><a href="#bonus/<%= bonusSnap.name() %>"><%= bonusSnap.name() %></a></td>
+			<td><%= bonusSnap.val().team %></td>
+		</tr>
+		<%}) %>
+	</tbody>
+</table>
+

@@ -9,7 +9,7 @@ String.prototype.endsWith = function(suffix) {
 };
 
 ref.auth(process.env.FIREBASE_SECRET, function(err) {
-  if(err) console.log("Login Failed!", err);
+  if (err) console.log("Login Failed!", err);
   else readFiles();
 });
 
@@ -39,6 +39,7 @@ proccessFile = function(file) {
 	savePlayoffForecasts(sheet, name, 61, 62, 50, 'O', 'Q', 'J', 'R', 'U', 'W');
 	savePlayoffForecasts(sheet, name, 63, 63, 54, 'O', 'Q', 'J', 'R', 'U', 'W');
 	savePlayoffForecasts(sheet, name, 64, 64, 57, 'O', 'Q', 'J', 'R', 'U', 'W');
+	saveBonusForecasts(sheet, name);
 }
 
 saveGroupForecasts = function(sheet, name, numStart, rowStart, locGoalsCol, visGoalsCol,
@@ -77,6 +78,17 @@ savePlayoffForecasts = function(sheet, name, numStart, numEnd, rowStart, locGoal
 		}
 		row++;
 	};
+};
+
+saveBonusForecasts = function(sheet, name) {
+	set('bonus/1/forecasts/' + name + '/team', sheet['O60'].v);
+	set('players/' + name + '/bonus/1/team', sheet['O60'].v);
+	set('bonus/2/forecasts/' + name+ '/team', sheet['O62'].v);
+	set('players/' + name + '/bonus/2/team', sheet['O62'].v);
+	set('bonus/3/forecasts/' + name+ '/team', sheet['O64'].v);
+	set('players/' + name + '/bonus/3/team', sheet['O64'].v);
+	set('bonus/4/forecasts/' + name+ '/team', sheet['O66'].v);
+	set('players/' + name + '/bonus/4/team', sheet['O66'].v);
 };
 
 set = function(path, value) {

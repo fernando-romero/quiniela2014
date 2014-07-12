@@ -1,0 +1,20 @@
+<h2>Place #<%= snap.name()  %>: <%= snap.val().team %></h2>
+<table class="table table-striped table-hover">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Team</th>
+			<th>Points</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% snap.child('forecasts').forEach(function(forecastSnap){ %>
+		<tr>
+			<td><a href="#players/<%= forecastSnap.name() %>"><%= forecastSnap.name() %></a></td>
+			<td><%= forecastSnap.val().team %></td>
+			<td><%= forecastSnap.val().points %></td>
+		</tr>
+		<%}) %>
+	</tbody>
+</table>
+

@@ -7,7 +7,9 @@ app.Routers.Main = Backbone.Router.extend({
     'players': 'players',
     'players/:name': 'player',
     'matches': 'matches',
-    'matches/:num': 'match'
+    'matches/:num': 'match',
+    'bonus': 'bonuses',
+    'bonus/:num': 'bonus'
   },
 
   prepare: function() {
@@ -33,6 +35,16 @@ app.Routers.Main = Backbone.Router.extend({
   match: function(num) {
   	this.prepare();
   	this.view = new app.Views.Match({ el: 'div.app_content', num: num });
+  },
+
+  bonuses: function(){
+    this.prepare();
+    this.view = new app.Views.Bonuses({ el: 'div.app_content' });
+  },
+
+  bonus: function(num) {
+    this.prepare();
+    this.view = new app.Views.Bonus({ el: 'div.app_content', num: num });
   }
 
 });

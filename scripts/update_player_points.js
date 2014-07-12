@@ -13,6 +13,9 @@ updatePlayerPoints = function() {
 			playerSnap.child('forecasts').forEach(function(forecastSnap) {
 				points += forecastSnap.val().points || 0;
 			});
+			playerSnap.child('bonus').forEach(function(bonusSnap) {
+				points += bonusSnap.val().points || 0;
+			});
 			set('players/' + playerSnap.name() + '/points', points);
 			ref.child('players/' + playerSnap.name()).setPriority(1.0 / (1.0 + points));
 		});
